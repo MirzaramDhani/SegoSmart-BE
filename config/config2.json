@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "postgres.zsigxlwzsldpxtesjzlv",
+    "password": "Segosmart123",
+    "database": "postgres",
+    "host": "aws-0-us-east-2.pooler.supabase.com",
+    "port": 6543,
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "postgres.zsigxlwzsldpxtesjzlv",
+    "password": "Segosmart123",
+    "database": "postgres",
+    "host": "aws-0-us-east-2.pooler.supabase.com",
+    "port": 6543,
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "postgres.zsigxlwzsldpxtesjzlv",
+    "password": "Segosmart123",
+    "database": "postgres",
+    "host": "aws-0-us-east-2.pooler.supabase.com",
+    "port": 6543,
+    "dialect": "postgres"
+  }
+}
