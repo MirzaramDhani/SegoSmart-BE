@@ -13,8 +13,7 @@
     "pg": "^8.13.1",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.5",
-    "sequelize-cli": "^6.6.2",
-    "server": "file:"
+    "sequelize-cli": "^6.6.2"
   },
   "name": "server",
   "version": "1.0.0",
