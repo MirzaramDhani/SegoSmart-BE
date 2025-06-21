@@ -6,13 +6,13 @@ require("dotenv").config()
 app.use(express.json());
 app.use(cors());
 
-const adminRouter = require("../../router/Admin")
-const menuRouter = require("../../router/Menu")
-const promoRouter = require("../../router/Promo")
-const keranjangRouter = require("../../router/Keranjang")
-const uploadGambarRouter = require("../../router/UploadGambar")
-const itempesananRouter = require("../../router/ItemPesanan")
-const riwayatrouter = require("../../router/Riwayat")
+const adminRouter = require("../router/Admin")
+const menuRouter = require("../router/Menu")
+const promoRouter = require("../router/Promo")
+const keranjangRouter = require("../router/Keranjang")
+const uploadGambarRouter = require("../router/UploadGambar")
+const itempesananRouter = require("../router/ItemPesanan")
+const riwayatrouter = require("../router/Riwayat")
 
 
 app.use("/Admin",adminRouter)
