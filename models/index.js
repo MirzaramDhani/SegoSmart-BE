@@ -15,6 +15,7 @@ if (config.use_env_variable) {
   // production, menggunakan DATABASE_URL
   sequelize = new Sequelize(process.env[config.use_env_variable], {
     dialect: "postgres",
+    dialectModule: "pg",
     protocol: "postgres",
     dialectOptions: {
       ssl: {
