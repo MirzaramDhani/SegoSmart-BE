@@ -25,6 +25,7 @@ app.use("/riwayat", riwayatrouter)
 
 
 const db =require ("../models");
+db.sequelize.sync();
 
 // db.sequelize.sync().then(()=>
 // {
