@@ -1,6 +1,6 @@
 "use strict";
 
-import pg from pg;
+import pg from "pg";
 
 const fs = require("fs");
 const path = require("path");
