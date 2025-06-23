@@ -1,6 +1,6 @@
 "use strict";
 
-// import pg from "pg";
+import pg from "pg";
 
 const fs = require("fs");
 const path = require("path");
@@ -17,7 +17,7 @@ if (config.use_env_variable) {
   // production, menggunakan DATABASE_URL
   sequelize = new Sequelize(process.env[config.use_env_variable], {
     dialect: "postgres",
-    // dialectModule: pg,
+    dialectModule: pg,
     protocol: "postgres",
     dialectOptions: {
       ssl: {
