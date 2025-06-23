@@ -25,15 +25,15 @@ app.use("/riwayat", riwayatrouter)
 
 
 const db =require ("../models");
-db.sequelize.sync();
+// db.sequelize.sync();
 
-// db.sequelize.sync().then(()=>
-// {
-//     app.listen(3001,()=>
-//         console.log("Run port 3001")
-//     )
-// }
-// )
+db.sequelize.sync().then(()=>
+{
+    app.listen(3001,()=>
+        console.log("Run port 3001")
+    )
+}
+)
 app.get("/", (req, res) => {
   res.send("Hello from backend");
 });
