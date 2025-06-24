@@ -2,6 +2,13 @@ const express = require("express");
 const router = express.Router();
 const { Menu } = require("../models");
 const { Op } = require("sequelize");
+const { createClient } = require("@supabase/supabase-js");
+require("dotenv").config();
+
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_KEY
+);
 
 router.post("/tambahMenu",async(req,res)=>{
     const {nama_menu,kategori,deskripsi,gambar,harga,stok} = req.body
@@ -21,30 +28,26 @@ router.post("/tambahMenu",async(req,res)=>{
 
     const frontId ={
         "makanan": "A",
-        "minuman": "B"
+        "minuman": "B",
+        "paket"  : "C"
     }
 
     const hurufDepan = frontId[kategori]
 
-    const angkaId = perKategori.map((item)=> parseInt(item.id_menu.slice(1), 10))
-    let idBaru = null;
-    if(angkaId.length === 0)
-        idBaru = `${hurufDepan}1`
-    else{
-        for(let i = 1; i<=Math.max(...angkaId); i++){
-            if(!angkaId.includes(i)){
-                idBaru = `${hurufDepan}${i}`
-
-                break
-            }
+    function generateId(perKategori, hurufDepan) {
+      const angkaId = perKategori
+        .map(item => parseInt(item.id_menu.slice(1), 10))
+        .sort((a, b) => a - b);
+    
+      for (let i = 1; i <= angkaId.length + 1; i++) {
+        if (!angkaId.includes(i)) {
+          return `${hurufDepan}${i}`;
         }
-
-        if(!idBaru){
-            const lastId = angkaId[angkaId.length-1]
-            idBaru = `${hurufDepan}${lastId+1}`
-
-        }
+      }
     }
+    
+    const idBaru = generateId(perKategori, hurufDepan)
+
     await Menu.create({
         id_menu:idBaru,
         nama_menu: nama_menu,
@@ -74,7 +77,6 @@ router.post("/editMenu", async (req, res) => {
     if (!menu) {
       return res.json({ error: "Menu tidak ditemukan!" });
     }
-
     // Update data menu
     await Menu.update(
       {
@@ -137,7 +139,7 @@ router.delete("/hapusMenu/:id_menu", async (req, res) => {
   try {
     const { id_menu } = req.params;
 
-    // Periksa apakah menu dengan ID yang diberikan ada di database
+    // Cari menu
     const menu = await Menu.findOne({
       where: {
         id_menu: id_menu,
@@ -148,14 +150,30 @@ router.delete("/hapusMenu/:id_menu", async (req, res) => {
       return res.status(404).json({ error: "Menu tidak ditemukan" });
     }
 
-    // Hapus menu dari database
+    const fullUrl = menu.gambar;
+    const namaGambar = fullUrl.split("/").pop(); // hasil: nasigoreng.jpg
+
+    // Hapus dari bucket
+    const { error: deleteError } = await supabase.storage
+      .from("uploads")
+      .remove(["menu/" + namaGambar]);
+
+    if (deleteError) {
+      console.error("Gagal hapus gambar:", deleteError);
+      // lanjut hapus menu, tapi beri warning
+    }
+
+    // Hapus dari DB
     await Menu.destroy({
       where: {
         id_menu: id_menu,
       },
     });
 
-    return res.json({ success: true, message: "Menu berhasil dihapus" });
+    return res.json({
+      success: true,
+      message: "Menu & gambar berhasil dihapus",
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Terjadi kesalahan pada server" });
