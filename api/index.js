@@ -34,8 +34,8 @@ db.sequelize.sync();
 //     )
 // }
 // )
-// app.get("/", (req, res) => {
-//   res.send("Hello from backend");
-// });
+app.get("/", (req, res) => {
+  res.send("Hello from backend");
+});
 
 module.exports = app;
